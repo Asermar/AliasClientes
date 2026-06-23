@@ -1,29 +1,41 @@
 <?php
+/**
+ * Copyright (C) 2026 Alexis Serafin <alexis@okodex.com>
+ */
 
 namespace FacturaScripts\Plugins\AliasClientes;
 
 use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Core\Where;
+use FacturaScripts\Dinamic\Model\AliasType;
 
 /**
- * Los plugins pueden contener un archivo Init.php en el que se definen procesos a ejecutar
- * cada vez que carga FacturaScripts o cuando se instala o actualiza el plugin.
- *
- * https://facturascripts.com/publicaciones/el-archivo-init-php-307
+ * @author Alexis Serafin <alexis@okodex.com>
  */
 class Init extends InitClass
 {
+    /** Tipo de alias que usa este plugin (catálogo aliastypes) */
+    const ALIAS_TYPE = 'client';
+
     public function init(): void
     {
-        // se ejecuta cada vez que carga FacturaScripts (si este plugin está activado).
+        $this->loadExtension(new Extension\Controller\EditCliente());
+        $this->loadExtension(new Extension\Model\Cliente());
+        $this->loadExtension(new Extension\Model\Alias());
     }
 
     public function uninstall(): void
     {
-        // se ejecuta cada vez que se desinstale el plugin. Primero desinstala y luego ejecuta el uninstall.
     }
 
     public function update(): void
     {
-        // se ejecuta cada vez que se instala o actualiza el plugin
+        // aseguramos que el tipo de alias 'client' exista en el catálogo
+        $type = new AliasType();
+        if (false === $type->loadWhere([Where::eq('aliastype', self::ALIAS_TYPE)])) {
+            $type->aliastype = self::ALIAS_TYPE;
+            $type->description = 'Cliente';
+            $type->save();
+        }
     }
 }
