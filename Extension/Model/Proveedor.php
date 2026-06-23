@@ -11,18 +11,18 @@ use FacturaScripts\Dinamic\Model\Alias;
 use FacturaScripts\Plugins\AliasClientes\Init;
 
 /**
- * Simula el ON DELETE CASCADE: al eliminar un cliente, borra sus alias.
+ * Simula el ON DELETE CASCADE: al eliminar un proveedor, borra sus alias.
  *
  * @author Alexis Serafin <alexis@okodex.com>
  */
-class Cliente
+class Proveedor
 {
     public function delete(): Closure
     {
         return function () {
             $where = [
-                Where::eq('aliastype', Init::ALIAS_TYPE_CLIENT),
-                Where::eq('cod', $this->codcliente),
+                Where::eq('aliastype', Init::ALIAS_TYPE_PROVIDER),
+                Where::eq('cod', $this->codproveedor),
             ];
             foreach (Alias::all($where) as $alias) {
                 $alias->delete();

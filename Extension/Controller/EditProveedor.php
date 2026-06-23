@@ -10,31 +10,31 @@ use FacturaScripts\Core\Where;
 use FacturaScripts\Plugins\AliasClientes\Init;
 
 /**
- * Extiende EditCliente para mostrar y gestionar los alias del cliente.
+ * Extiende EditProveedor para mostrar y gestionar los alias del proveedor.
  *
  * @author Alexis Serafin <alexis@okodex.com>
  */
-class EditCliente
+class EditProveedor
 {
     public function createViews(): Closure
     {
         return function () {
-            $this->addEditListView('EditAliasCliente', 'Alias', 'aliases', 'fa-solid fa-tags');
+            $this->addEditListView('EditAliasProveedor', 'Alias', 'aliases', 'fa-solid fa-tags');
         };
     }
 
     public function loadData(): Closure
     {
         return function ($viewName, $view) {
-            if ($viewName !== 'EditAliasCliente') {
+            if ($viewName !== 'EditAliasProveedor') {
                 return;
             }
 
-            // filtramos los alias de tipo 'client' del cliente actual; este mismo where
-            // autorrellena aliastype y cod en el formulario de alta (EditListView::loadData)
+            // alias de tipo 'supplier' del proveedor actual; el where autorrellena
+            // aliastype y cod en el formulario de alta (EditListView::loadData)
             $mvn = $this->getMainViewName();
             $where = [
-                Where::eq('aliastype', Init::ALIAS_TYPE_CLIENT),
+                Where::eq('aliastype', Init::ALIAS_TYPE_PROVIDER),
                 Where::eq('cod', $this->views[$mvn]->model->id()),
             ];
             $view->loadData('', $where);
