@@ -6,7 +6,6 @@
 namespace FacturaScripts\Plugins\AliasClientes;
 
 use FacturaScripts\Core\Template\InitClass;
-use FacturaScripts\Core\Where;
 use FacturaScripts\Dinamic\Model\AliasType;
 
 /**
@@ -19,6 +18,9 @@ class Init extends InitClass
 
     /** Tipo de alias para proveedores (catálogo aliastypes) */
     const ALIAS_TYPE_PROVIDER = 'supplier';
+
+    /** Nombre del plugin, responsable de estos tipos de alias (catálogo aliastypes) */
+    const PLUGIN_NAME = 'AliasClientes';
 
     public function init(): void
     {
@@ -35,18 +37,8 @@ class Init extends InitClass
 
     public function update(): void
     {
-        // aseguramos que los tipos de alias existan en el catálogo
-        $this->ensureAliasType(self::ALIAS_TYPE_CLIENT, 'Cliente');
-        $this->ensureAliasType(self::ALIAS_TYPE_PROVIDER, 'Proveedor');
-    }
-
-    protected function ensureAliasType(string $code, string $description): void
-    {
-        $type = new AliasType();
-        if (false === $type->loadWhere([Where::eq('aliastype', $code)])) {
-            $type->aliastype = $code;
-            $type->description = $description;
-            $type->save();
-        }
+        // aseguramos que los tipos de alias existan en el catálogo, indicando el plugin responsable
+        AliasType::ensure(self::ALIAS_TYPE_CLIENT, 'Cliente', self::PLUGIN_NAME);
+        AliasType::ensure(self::ALIAS_TYPE_PROVIDER, 'Proveedor', self::PLUGIN_NAME);
     }
 }

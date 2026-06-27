@@ -3,5 +3,7 @@
     "alias-cod-not-found": "Record %cod% does not exist for alias type %aliastype%.",
     "aliasclientes": "AliasClientes",
     "aliases": "Aliases",
-    "favorite": "Favorite"
+    "client": "Customer",
+    "favorite": "Favorite",
+    "supplier": "Supplier"
 }
