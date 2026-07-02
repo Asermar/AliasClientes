@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2026 Alexis Serafin <alexis@okodex.com>
+ * Copyright (C) 2026 Oko Digital Experts, S.L.L. (Okodex)
  */
 
 namespace FacturaScripts\Plugins\AliasClientes\Extension\Model;
@@ -13,7 +13,7 @@ use FacturaScripts\Plugins\AliasClientes\Init;
 /**
  * Simula el ON DELETE CASCADE: al eliminar un cliente, borra sus alias.
  *
- * @author Alexis Serafin <alexis@okodex.com>
+ * @author Alexis Serafín <alexis@okodex.com>
  */
 class Cliente
 {

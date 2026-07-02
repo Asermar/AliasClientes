@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2026 Alexis Serafin <alexis@okodex.com>
+ * Copyright (C) 2026 Oko Digital Experts, S.L.L. (Okodex)
  */
 
 namespace FacturaScripts\Plugins\AliasClientes\Extension\Model;
@@ -14,7 +14,7 @@ use FacturaScripts\Plugins\AliasClientes\Init;
 /**
  * FK simulada: valida que cod sea un registro existente del modelo asociado al tipo.
  *
- * @author Alexis Serafin <alexis@okodex.com>
+ * @author Alexis Serafín <alexis@okodex.com>
  */
 class Alias
 {

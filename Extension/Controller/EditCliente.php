@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2026 Alexis Serafin <alexis@okodex.com>
+ * Copyright (C) 2026 Oko Digital Experts, S.L.L. (Okodex)
  */
 
 namespace FacturaScripts\Plugins\AliasClientes\Extension\Controller;
@@ -12,7 +12,7 @@ use FacturaScripts\Plugins\AliasClientes\Init;
 /**
  * Extiende EditCliente para mostrar y gestionar los alias del cliente.
  *
- * @author Alexis Serafin <alexis@okodex.com>
+ * @author Alexis Serafín <alexis@okodex.com>
  */
 class EditCliente
 {
