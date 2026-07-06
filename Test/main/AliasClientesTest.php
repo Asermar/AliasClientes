@@ -16,19 +16,24 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @author Alexis Serafín <alexis@okodex.com>
+ *
+ * @description
+ * ## Alias de clientes y proveedores
+ *
+ * Integra el plugin `Alias` en las fichas de **clientes** y **proveedores**:
+ *
+ * - Se puede crear un alias asociado a un cliente/proveedor existente.
+ * - Al borrar el cliente/proveedor, sus alias se eliminan (**borrado en cascada**).
+ * - Se **rechaza** crear un alias para un código inexistente (FK simulada).
  */
 final class AliasClientesTest extends TestCase
 {
     use LogErrorsTrait;
     use RandomDataTrait;
 
-    protected function setUp(): void
-    {
-        // aseguramos los tipos del catálogo (normalmente los siembra Init::update)
-        $this->ensureType(Init::ALIAS_TYPE_CLIENT, 'Cliente');
-        $this->ensureType(Init::ALIAS_TYPE_PROVIDER, 'Proveedor');
-    }
-
+    /**
+     * @description Alias de un **cliente**: se crea y, al borrar el cliente, se borra en cascada.
+     */
     public function testClientAliasAndCascadeDelete(): void
     {
         $cliente = $this->getRandomCustomer();
@@ -48,6 +53,9 @@ final class AliasClientesTest extends TestCase
         $this->assertFalse($check->load($aliasId), 'el alias debería borrarse al borrar el cliente');
     }
 
+    /**
+     * @description No permite guardar un alias de **cliente** para un `codcliente` inexistente.
+     */
     public function testClientAliasRejectsMissingCustomer(): void
     {
         $alias = new Alias();
@@ -60,6 +68,9 @@ final class AliasClientesTest extends TestCase
         MiniLog::clear();
     }
 
+    /**
+     * @description Alias de un **proveedor**: se crea y, al borrar el proveedor, se borra en cascada.
+     */
     public function testSupplierAliasAndCascadeDelete(): void
     {
         $proveedor = $this->getRandomSupplier();
@@ -78,6 +89,9 @@ final class AliasClientesTest extends TestCase
         $this->assertFalse($check->load($aliasId), 'el alias debería borrarse al borrar el proveedor');
     }
 
+    /**
+     * @description No permite guardar un alias de **proveedor** para un `codproveedor` inexistente.
+     */
     public function testSupplierAliasRejectsMissingSupplier(): void
     {
         $alias = new Alias();
@@ -97,6 +111,13 @@ final class AliasClientesTest extends TestCase
             $type->description = $description;
             $type->save();
         }
+    }
+
+    protected function setUp(): void
+    {
+        // aseguramos los tipos del catálogo (normalmente los siembra Init::update)
+        $this->ensureType(Init::ALIAS_TYPE_CLIENT, 'Cliente');
+        $this->ensureType(Init::ALIAS_TYPE_PROVIDER, 'Proveedor');
     }
 
     protected function tearDown(): void
