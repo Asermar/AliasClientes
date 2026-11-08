@@ -15,7 +15,8 @@ de siempre— y localizarlos por cualquiera de ellos.
 
 - **Registra dos tipos de alias** en el catálogo: `client` (clientes) y `supplier` (proveedores).
 - **Pestaña de alias en las fichas** de cliente y proveedor, para dar de alta y de baja sus
-  denominaciones sin salir de la ficha.
+  denominaciones sin salir de la ficha. Esa pestaña **sólo alcanza los alias de la ficha abierta**:
+  lo acota la guarda de `Alias`.
 - **Valida que el alias apunte a un registro que existe**: la relación con el cliente o el proveedor no
   la conoce la base de datos, así que se comprueba al guardar.
 - **Borra los alias en cascada** al eliminar el cliente o el proveedor, para que no queden huérfanos
@@ -24,7 +25,7 @@ de siempre— y localizarlos por cualquiera de ellos.
 
 ## Requisitos
 
-- [`Alias`](https://github.com/Asermar/Alias)
+- [`Alias`](https://github.com/Asermar/Alias) **1.03** o superior (la guarda de la pestaña de alias).
 - FacturaScripts con core **2025** o superior, y PHP **8** o superior.
 
 ## Changelog
@@ -33,6 +34,19 @@ Cambios destacados por versión (la versión es la de `facturascripts.ini`, úni
 
 ### 1.0x — Alias de clientes y proveedores
 
+- **1.03** — **La pestaña de alias de la ficha deja de alcanzar los alias de otras fichas.** Mostraba
+  sólo los del cliente o proveedor abierto, pero el formulario manda el tipo y el código y las
+  acciones del núcleo cargan por código: con permiso para modificar clientes se podía crear, editar o
+  borrar **cualquier** alias del sistema. Ahora la pestaña pasa por la guarda `AliasTabGuard` de
+  `Alias`, que anula con un aviso lo que venga de fuera de la ficha, sin escribir nada.
+
+  > **Al actualizar**: esta versión necesita **`Alias` 1.03 o superior**, que es donde vive la guarda.
+  > Instala `Alias` **antes o a la vez**. No hay que desactivar nada previamente, y esto está medido
+  > en la instalación de pruebas, no supuesto: con `Alias` 1.02 y este plugin al día, la ficha de
+  > cliente no abre —«Class FacturaScripts\Dinamic\Lib\AliasTabGuard not found»— pero el **gestor de
+  > plugins sigue funcionando**, así que se arregla instalando `Alias` desde la propia interfaz, sin
+  > tocar `plugins.json`. El `require_min` del `.ini` lo deja escrito, pero el núcleo **no lo lee**:
+  > es documentación, no una puerta.
 - **1.02** — **Los alias siguen al código renombrado.** Al cambiar el `codcliente` o el
   `codproveedor` de una ficha, sus alias pasan al código nuevo; antes se quedaban apuntando a uno que
   ya no existía, así que la entidad perdía sus denominaciones y éstas seguían ocupando sitio en el
