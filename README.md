@@ -20,6 +20,7 @@ de siempre— y localizarlos por cualquiera de ellos.
   la conoce la base de datos, así que se comprueba al guardar.
 - **Borra los alias en cascada** al eliminar el cliente o el proveedor, para que no queden huérfanos
   ocupando denominaciones que después no se pueden reutilizar.
+- **Al cambiar el código** de un cliente o de un proveedor, sus alias pasan al código nuevo.
 
 ## Requisitos
 
@@ -32,6 +33,12 @@ Cambios destacados por versión (la versión es la de `facturascripts.ini`, úni
 
 ### 1.0x — Alias de clientes y proveedores
 
+- **1.02** — **Los alias siguen al código renombrado.** Al cambiar el `codcliente` o el
+  `codproveedor` de una ficha, sus alias pasan al código nuevo; antes se quedaban apuntando a uno que
+  ya no existía, así que la entidad perdía sus denominaciones y éstas seguían ocupando sitio en el
+  índice sin que nadie pudiera reutilizarlas. Y cuando la cascada de borrado no puede con alguno de
+  los alias, **queda un error que lo nombra** en vez de desaparecer en silencio: el cliente se borra
+  igual —porque borrado está—, pero se sabe qué alias quedó suelto.
 - **1.01** — El campo de alias admite **100 caracteres**, acompañando la ampliación del plugin `Alias`.
   Hacía falta tocarlo aquí: si el widget se quedara en 50, el formulario recortaría en silencio un alias
   que la base de datos sí acepta.

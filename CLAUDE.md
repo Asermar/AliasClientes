@@ -1,7 +1,7 @@
 # AliasClientes — guía para Claude Code
 
 Plugin **satélite** de **[Alias](../Alias/CLAUDE.md)** que dota de **alias polimórficos** a las
-fichas de **clientes** y **proveedores** del core de FacturaScripts. `version 1.01`,
+fichas de **clientes** y **proveedores** del core de FacturaScripts. `version 1.02`,
 `min_version 2025`, `min_php 8`, `require = 'Alias'`. Licencia **GPL v3**. Copyright **Okodex** /
 autor **Alexis Serafín**. Es submódulo dentro de Mesa_FS.
 
