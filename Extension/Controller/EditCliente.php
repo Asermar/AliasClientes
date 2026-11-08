@@ -20,6 +20,7 @@ namespace FacturaScripts\Plugins\AliasClientes\Extension\Controller;
 
 use Closure;
 use FacturaScripts\Core\Where;
+use FacturaScripts\Dinamic\Lib\AliasTabGuard;
 use FacturaScripts\Plugins\AliasClientes\Init;
 
 /**
@@ -33,6 +34,15 @@ class EditCliente
     {
         return function () {
             $this->addEditListView('EditAliasCliente', 'Alias', 'aliases', 'fa-solid fa-tags');
+
+            // la pestaña sólo escribe alias de esta ficha: es lo último antes de las acciones
+            AliasTabGuard::protect(
+                $this->request,
+                $this->active,
+                'EditAliasCliente',
+                Init::ALIAS_TYPE_CLIENT,
+                $this->views[$this->getMainViewName()]->model
+            );
         };
     }
 
