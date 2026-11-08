@@ -1,7 +1,7 @@
 # AliasClientes — guía para Claude Code
 
 Plugin **satélite** de **[Alias](../Alias/CLAUDE.md)** que dota de **alias polimórficos** a las
-fichas de **clientes** y **proveedores** del core de FacturaScripts. `version 1.00`,
+fichas de **clientes** y **proveedores** del core de FacturaScripts. `version 1.01`,
 `min_version 2025`, `min_php 8`, `require = 'Alias'`. Licencia **GPL v3**. Copyright **Okodex** /
 autor **Alexis Serafín**. Es submódulo dentro de Mesa_FS.
 
@@ -27,7 +27,15 @@ satélite"*). Concretado aquí:
   devuelve `true` (invariante de convivencia; ver `Alias/CLAUDE.md`).
 
 - **Cascada** (`Extension\Model\Cliente::delete()` / `Extension\Model\Proveedor::delete()`) — borran
-  los `Alias` del tipo correspondiente cuyo `cod` es `$this->codcliente` / `$this->codproveedor`.
+  los `Alias` del tipo correspondiente cuyo `cod` es `$this->codcliente` / `$this->codproveedor`. Es lo
+  esperado (decisión de Alexis, 8-nov-2026; la negativa a borrar es sólo de las localizaciones). Corre
+  **después** del borrado, a propósito: si el cliente no se puede borrar (p. ej. por sus documentos),
+  sus alias no se pierden. Si un alias no se puede borrar, queda un error (`alias-delete-error`) que lo
+  nombra; el borrado del cliente sigue contando como hecho, porque lo está.
+- **Renombrado de código** — `changePrimaryColumnValueBefore/After` en las dos extensiones: al cambiar
+  `codcliente` o `codproveedor`, los alias pasan al código nuevo con un único UPDATE. El Before guarda
+  el código viejo en un almacén privado de la extensión, porque `changeId()` del core sobrescribe
+  `original` con el nuevo antes de llamar al After.
 
 - **UI** — `Extension\Controller\EditCliente` y `EditProveedor`: cada una añade en `createViews()` su
   EditListView (`addEditListView('EditAlias{Cliente|Proveedor}', 'Alias', 'aliases', 'fa-solid fa-tags')`)
@@ -51,9 +59,11 @@ satélite"*). Concretado aquí:
 ## Tests (`Test/main/AliasClientesTest.php`)
 
 `install-plugins.txt` = `Alias,AliasClientes`. Cubre por cada tipo (client/supplier): alta de alias
-sobre una entidad existente + **borrado en cascada**, y **rechazo** de `cod` inexistente (limpia el
-MiniLog del warning esperado con `MiniLog::clear()`). `setUp()` siembra los tipos con un helper
-`ensureType()` (normalmente los sembraría `Init::update()`). Usa `RandomDataTrait`
+sobre una entidad existente + **borrado en cascada**, el error cuando un alias no se puede borrar en
+la cascada (con una extensión de prueba `deleteBefore` sobre `Alias`, retirada al acabar), el
+**renombrado** del código, y **rechazo** de `cod` inexistente. `setUp()` asegura los tipos con
+`AliasType::ensure()` (el catálogo no admite altas a mano) y borra los alias de prueba (`CLITEST-…`)
+que hubiera dejado una pasada muerta a medias. Usa `RandomDataTrait`
 (`getRandomCustomer`/`getRandomSupplier`) y `LogErrorsTrait`.
 
 ## Convenciones y gotchas
@@ -62,7 +72,7 @@ MiniLog del warning esperado con `MiniLog::clear()`). `setUp()` siembra los tipo
   extensión no se registra). Submódulo: commitear aquí y actualizar el puntero en Mesa_FS.
 - Mantener la invariante de `test()` (devolver `true` para tipos ajenos) para no romper la
   convivencia con AliasLocalizaciones / AliasBusCanarias sobre el mismo modelo `Alias`.
-- No crear `aliastypes` desde la UI; siempre por `AliasType::ensure()` en `update()`.
+- Los tipos sólo por `AliasType::ensure()` en `update()`: el modelo rechaza cualquier otra escritura.
 - Cabeceras de autoría Okodex/Alexis, GPL v3 (ver `Alias/CLAUDE.md`).
 
 ## Dudas / notas
