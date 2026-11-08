@@ -53,6 +53,9 @@ satélite"*). Concretado aquí:
   EditListView (`addEditListView('EditAlias{Cliente|Proveedor}', 'Alias', 'aliases', 'fa-solid fa-tags')`)
   y en `loadData()` filtra por `aliastype` + `cod = model->id()` (ese `Where` también autorrellena el
   formulario de alta). `model->id()` de `Cliente`/`Proveedor` devuelve `codcliente`/`codproveedor`.
+  `createViews()` llama además a `AliasTabGuard::protect()` (Alias): la pestaña sólo crea, edita o
+  borra alias de la ficha abierta. Lo prueba `Test/main/AliasClientesPestanaTest.php`, ejecutando el
+  controlador real con la petición en `$_GET`/`$_POST`.
 
 - **Dos XMLView separadas** (`EditAliasCliente.xml`, `EditAliasProveedor.xml`) de **contenido
   idéntico** (columnas `id`/`aliastype`/`cod` en `display="none"`, `alias` y `favorite` visibles).
