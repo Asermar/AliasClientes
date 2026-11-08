@@ -1,6 +1,8 @@
 {
     "alias": "Alias",
     "alias-cod-not-found": "No existe el registro %cod% para el tipo de alias %aliastype%.",
+    "alias-delete-error": "Se borró %aliastype% %cod%, pero no su alias «%alias%»: bórralo desde la lista de alias.",
+    "alias-rename-error": "No se pudieron pasar los alias de %aliastype% de %old% a %new%.",
     "aliasclientes": "AliasClientes",
     "aliases": "Alias",
     "client": "Cliente",
